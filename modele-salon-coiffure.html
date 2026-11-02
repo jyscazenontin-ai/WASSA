@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Salon de coiffure</title>
+<style>
+  :root{
+    --principal:#7a2e4d;   /* couleur 1 : à adapter au salon */
+    --clair:#fbf3f6;       /* couleur 2 */
+    --texte:#2b2226;
+    --wa:#25d366;          /* vert WhatsApp : boutons d'action uniquement */
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--texte);line-height:1.5;padding-bottom:76px;background:#fff}
+  img{max-width:100%;display:block}
+  section{padding:40px 20px;max-width:760px;margin:0 auto}
+  h2{font-size:1.4rem;margin-bottom:18px;color:var(--principal)}
+  .btn{display:inline-block;padding:14px 22px;border-radius:999px;font-weight:700;text-decoration:none;font-size:1rem}
+  .btn-wa{background:var(--wa);color:#fff}
+  .btn-tel{background:#fff;color:var(--principal);border:2px solid var(--principal)}
+
+  /* 1. Hero */
+  .hero{background:var(--principal);color:#fff;text-align:center;padding:0}
+  .hero-img{height:220px;background:linear-gradient(135deg,#a8466d,#5a1f38);background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;font-size:4rem}
+  .hero-txt{padding:28px 20px 36px;max-width:760px;margin:0 auto}
+  .hero h1{font-size:1.9rem;line-height:1.2;margin-bottom:10px}
+  .hero p{opacity:.92;margin-bottom:22px}
+
+  /* 2. Services */
+  .services{background:var(--clair);max-width:none}
+  .services .in{max-width:720px;margin:0 auto}
+  .ligne{display:flex;justify-content:space-between;gap:12px;padding:13px 0;border-bottom:1px dashed #d9bfc9}
+  .ligne b{color:var(--principal);white-space:nowrap}
+  .note{font-size:.85rem;opacity:.7;margin-top:12px}
+
+  /* 3. Réalisations */
+  .grille{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+  .grille .ph{aspect-ratio:1;border-radius:10px;background:var(--clair);display:flex;align-items:center;justify-content:center;font-size:2rem;overflow:hidden}
+  .grille img{width:100%;height:100%;object-fit:cover}
+  @media(min-width:600px){.grille{grid-template-columns:repeat(3,1fr)}}
+
+  /* 4. Avis */
+  .avis-bloc{background:var(--clair);max-width:none}
+  .avis-bloc .in{max-width:720px;margin:0 auto}
+  .avis{background:#fff;border-radius:12px;padding:16px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+  .avis .etoiles{color:#f5a623;letter-spacing:2px}
+  .avis .nom{font-weight:700;margin-top:6px;font-size:.9rem}
+
+  /* 5. Pourquoi */
+  .points li{list-style:none;padding:8px 0;font-size:1.05rem}
+
+  /* 6. Contact */
+  .contact{background:var(--principal);color:#fff;max-width:none}
+  .contact .in{max-width:720px;margin:0 auto}
+  .contact h2{color:#fff}
+  .contact p{margin-bottom:8px}
+  .contact .btns{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+  .contact .btn-tel{background:transparent;color:#fff;border-color:#fff}
+  .carte{border:0;width:100%;height:220px;border-radius:12px;margin-top:8px}
+  footer{text-align:center;font-size:.8rem;padding:18px;opacity:.7}
+
+  /* Bouton WhatsApp fixe (mobile) */
+  .fixe{position:fixed;left:0;right:0;bottom:0;padding:10px 16px;background:rgba(255,255,255,.95);box-shadow:0 -2px 10px rgba(0,0,0,.1);text-align:center;z-index:10}
+  .fixe .btn{width:100%;max-width:420px}
+</style>
+</head>
+<body>
+
+<!-- 1. EN-TÊTE -->
+<header class="hero">
+  <div class="hero-img" id="heroImg">💇‍♀️</div>
+  <div class="hero-txt">
+    <h1 id="titre"></h1>
+    <p id="sousTitre"></p>
+    <a class="btn btn-wa" id="waHero" target="_blank" rel="noopener">💬 Réserver sur WhatsApp</a>
+  </div>
+</header>
+
+<!-- 2. SERVICES -->
+<section class="services"><div class="in">
+  <h2>Nos services et tarifs</h2>
+  <div id="services"></div>
+  <p class="note">Tarifs indicatifs, confirmés à la réservation.</p>
+</div></section>
+
+<!-- 3. RÉALISATIONS -->
+<section>
+  <h2>Nos réalisations</h2>
+  <div class="grille" id="photos"></div>
+</section>
+
+<!-- 4. AVIS -->
+<section class="avis-bloc"><div class="in">
+  <h2>Ce que disent nos clients</h2>
+  <div id="avis"></div>
+</div></section>
+
+<!-- 5. POURQUOI NOUS CHOISIR -->
+<section>
+  <h2>Pourquoi nous choisir</h2>
+  <ul class="points" id="points"></ul>
+</section>
+
+<!-- 6. CONTACT -->
+<section class="contact"><div class="in">
+  <h2>Nous trouver</h2>
+  <p id="adresse"></p>
+  <p id="horaires"></p>
+  <div class="btns">
+    <a class="btn btn-wa" id="waContact" target="_blank" rel="noopener">💬 WhatsApp</a>
+    <a class="btn btn-tel" id="tel">📞 Appeler</a>
+  </div>
+  <iframe class="carte" id="carte" loading="lazy" title="Carte"></iframe>
+</div></section>
+
+<footer id="pied"></footer>
+
+<!-- Bouton fixe mobile -->
+<div class="fixe"><a class="btn btn-wa" id="waFixe" target="_blank" rel="noopener">💬 Réserver sur WhatsApp</a></div>
+
+<script>
+/* ============================================================
+   ✏️  À MODIFIER POUR CHAQUE PROSPECT (seule zone à toucher)
+   ============================================================ */
+const SALON = {
+  nom: "Salon Exemple",
+  ville: "Cotonou",
+  quartier: "Haie Vive",
+  jours: "lun–sam",
+  horaires: "Lun–Sam, 8h–19h",
+  note: "4,8",                       // note Google réelle du salon
+  adresse: "Rue 123, Haie Vive, Cotonou",
+  whatsapp: "22900000000",           // format international, sans + ni espaces
+  telephone: "+22900000000",
+  annees: "5",                       // années d'expérience (laisser "" pour masquer)
+  couleur: "#7a2e4d",                // couleur principale
+  imageHero: "",                     // ex: "photos/hero.jpg" (laisser vide = visuel par défaut)
+  services: [
+    { nom: "Tresses",            prix: "à partir de 5 000 FCFA" },
+    { nom: "Coupe homme",        prix: "1 500 FCFA" },
+    { nom: "Brushing",           prix: "2 000 FCFA" },
+    { nom: "Soins et coloration", prix: "sur demande" }
+  ],
+  photos: [],                        // ex: ["photos/1.jpg","photos/2.jpg", ... 6 photos < 150 Ko]
+  avis: [                            // ⚠️ remplacer par de VRAIS avis Google du salon
+    { nom: "Prénom", etoiles: 5, texte: "[Collez ici un vrai avis Google]" },
+    { nom: "Prénom", etoiles: 5, texte: "[Collez ici un vrai avis Google]" }
+  ],
+  signature: "Site créé par Jysca · [ton contact]"
+};
+/* ============================================================ */
+
+const $ = id => document.getElementById(id);
+const msg = encodeURIComponent("Bonjour " + SALON.nom + ", je voudrais réserver un rendez-vous.");
+const wa = "https://wa.me/" + SALON.whatsapp + "?text=" + msg;
+
+document.title = SALON.nom + " · Coiffure à " + SALON.ville;
+document.documentElement.style.setProperty("--principal", SALON.couleur);
+
+$("titre").textContent = SALON.nom + ", votre coiffeur à " + SALON.ville;
+$("sousTitre").textContent = SALON.quartier + " · Ouvert " + SALON.jours + " · ⭐ " + SALON.note + "/5 selon nos clients";
+if (SALON.imageHero) { $("heroImg").style.backgroundImage = "url('" + SALON.imageHero + "')"; $("heroImg").textContent = ""; }
+
+["waHero","waContact","waFixe"].forEach(id => $(id).href = wa);
+
+$("services").innerHTML = SALON.services.map(s =>
+  '<div class="ligne"><span>' + s.nom + '</span><b>' + s.prix + '</b></div>').join("");
+
+const nbPhotos = 6;
+$("photos").innerHTML = Array.from({length: nbPhotos}, (_, i) =>
+  '<div class="ph">' + (SALON.photos[i] ? '<img loading="lazy" src="' + SALON.photos[i] + '" alt="Réalisation ' + (i+1) + '">' : "💇") + '</div>').join("");
+
+$("avis").innerHTML = SALON.avis.map(a =>
+  '<div class="avis"><div class="etoiles">' + "★".repeat(a.etoiles) + '</div><p>« ' + a.texte + ' »</p><div class="nom">' + a.nom + '</div></div>').join("");
+
+const points = [];
+if (SALON.annees) points.push("✔ " + SALON.annees + " ans d'expérience");
+points.push("✔ Produits de qualité", "✔ Rendez-vous rapide par WhatsApp");
+$("points").innerHTML = points.map(p => "<li>" + p + "</li>").join("");
+
+$("adresse").textContent = "📍 " + SALON.adresse;
+$("horaires").textContent = "🕒 " + SALON.horaires;
+$("tel").href = "tel:" + SALON.telephone;
+$("carte").src = "https://www.google.com/maps?q=" + encodeURIComponent(SALON.nom + " " + SALON.adresse) + "&output=embed";
+$("pied").textContent = SALON.signature;
+</script>
+</body>
+</html>
